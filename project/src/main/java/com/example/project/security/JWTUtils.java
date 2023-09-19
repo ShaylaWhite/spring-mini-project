@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class JWTUtils {
 
     Logger logger = Logger.getLogger(JWTUtils.class.getName());
-
+// declared a Logger object with the name logger at the class level. This allows you to use the logger throughout the class.
     @Value("${jwt-secret}")
     private String jwtSecret;
 
