@@ -17,7 +17,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    // ERD Relationships
+
+// Getters and Setters
 
     public Long getId() {
         return id;
@@ -50,8 +51,20 @@ public class User {
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
     }
-
+    // ERD Relationships
     // One-to-One relationship with user profile (optional)
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
+
+    // to String
+    //@Override annotation is used to indicate that a method in a subclass is intended to override a method with the same name, return type, and parameter list in its superclass (parent class). When you mark a method with @Override, you're essentially telling the compiler that you intend to provide a new implementation for a method that's already defined in the superclass.
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", userProfile=" + userProfile +
+                '}';
+    }
 }
