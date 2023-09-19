@@ -13,6 +13,33 @@ User Stories:
 
 
 API Endpoints:
+
+API Endpoints
+User Authentication
+POST /auth/users/register/: Register a new user with a username and password (Public)
+POST /auth/users/login/: Log in and obtain a JWT token with a username and password (Public)
+Books
+POST /api/books/: Create a new book (Admin, requires JWT)
+GET /api/books/: Get a list of all books (Public, does not require JWT)
+GET /api/books/{id}: Get details of a book by ID (Public, does not require JWT)
+PUT /api/books/{id}: Update book details (Admin, requires JWT)
+DELETE /api/books/{id}: Delete a book (Admin, requires JWT)
+Authors
+POST /api/authors/: Create a new author (Admin, requires JWT)
+GET /api/authors/: Get a list of all authors (Public, does not require JWT)
+GET /api/authors/{id}: Get details of an author by ID (Public, does not require JWT)
+PUT /api/authors/{id}: Update author details (Admin, requires JWT)
+DELETE /api/authors/{id}: Delete an author (Admin, requires JWT)
+Categories
+POST /api/categories/: Create a new category (Admin, requires JWT)
+GET /api/categories/: Get a list of all categories (Public, does not require JWT)
+GET /api/categories/{id}: Get details of a category by ID (Public, does not require JWT)
+PUT /api/categories/{id}: Update category details (Admin, requires JWT)
+DELETE /api/categories/{id}: Delete a category (Admin, requires JWT)
+Borrowing and Returning
+POST /api/borrow/{bookId}: Borrow a book (Library Member, requires JWT)
+POST /api/return/{bookId}: Return a book (Library Member, requires JWT)
+
 []Design API endpoints for user authentication, managing books, authors, categories, and borrowing/returning books.
 []Define access control (Admin, Public, Library Member) and JWT requirements for each endpoint.
 
