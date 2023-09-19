@@ -74,4 +74,7 @@ public class User {
                 ", userProfile=" + userProfile +
                 '}';
     }
+
+    public boolean isActive() {
+    }
 }
