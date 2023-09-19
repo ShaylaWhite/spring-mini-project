@@ -43,6 +43,13 @@ public class UserService {
     }
 
     // Find User By Email Address Method
+
+    /**
+     * Find a user by their email address.
+     *
+     * @param emailAddress The email address of the user to retrieve.
+     * @return The User object if found, or null if not found.
+     */
     public User findUserByEmailAddress(String emailAddress) {
         // Use the userRepository to find a user by their email address.
         return userRepository.findUserByEmailAddress(emailAddress);
