@@ -1,8 +1,6 @@
 package com.example.project.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -19,6 +17,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-
     // ERD Relationships
+
+    // One-to-One relationship with user profile (optional)
+    @OneToOne(mappedBy = "user")
+    private UserProfile userProfile;
 }
