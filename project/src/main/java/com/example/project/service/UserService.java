@@ -10,6 +10,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * The UserService class provides methods for user-related operations such as registration and retrieval.
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -21,8 +24,9 @@ public class UserService {
     // Constructor injection: Dependencies are injected through the constructor.
     // UserRepository represents the repository for user-related data access.
     // PasswordEncoder is used for securely hashing user passwords.
-    @Autowired
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder, JWTUtils jwtUtils, AuthenticationManager authenticationManager) {
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder,
+                       JWTUtils jwtUtils,
+                       @Lazy AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
