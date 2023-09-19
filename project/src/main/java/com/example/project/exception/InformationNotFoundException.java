@@ -12,3 +12,5 @@ public class InformationNotFoundException extends RuntimeException {
         super(message);
     }
 }
+
+//The InformationNotFoundException class is used to create a custom exception that represents a "not found" situation in your application. When thrown, it will result in an HTTP response with a status code of 404 (NOT_FOUND).

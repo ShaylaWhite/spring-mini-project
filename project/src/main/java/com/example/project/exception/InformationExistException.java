@@ -13,3 +13,5 @@ public class InformationExistException extends RuntimeException {
         super(message);
     }
 }
+
+//The InformationExistException class is used to create a custom exception that represents a "conflict" situation in your application. When thrown, it will result in an HTTP response with a status code of 409 (CONFLICT).
