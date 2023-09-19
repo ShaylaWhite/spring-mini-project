@@ -56,6 +56,14 @@ public class UserService {
     }
 
     // Create User Method
+
+    /**
+     * Create a new user with the provided user object.
+     *
+     * @param userObject The User object representing the user to be created.
+     * @return The created User object.
+     * @throws InformationExistException If a user with the same email address already exists.
+     */
     public User createUser(User userObject) {
         // Check if a user with the same email address already exists.
         if (!userRepository.existsByEmailAddress(userObject.getEmailAddress())) {
