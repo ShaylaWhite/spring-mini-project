@@ -5,21 +5,31 @@ import com.example.project.model.User;
 import com.example.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final JWTUtils jwtUtils;
+    private final AuthenticationManager authenticationManager;
+
     // Constructor injection: Dependencies are injected through the constructor.
     // UserRepository represents the repository for user-related data access.
     // PasswordEncoder is used for securely hashing user passwords.
     @Autowired
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     // Find User By Email Address Method
@@ -41,4 +51,17 @@ public class UserService {
             throw new InformationExistException("User with email address " + userObject.getEmailAddress() + " already exists");
         }
     }
+//    // Login in User Method
+//    public Optional<String> loginUser(LoginRequest loginRequest) {
+//        UsernamePasswordAuthenticationToken authenticationToken = new
+//                UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword());
+//        try {
+//            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+//            return Optional.of(jwtUtils.generateJwtToken(myUserDetails));
+//        } catch (Exception e) {
+//            return Optional.empty();
+//        }
+//    }
 }
