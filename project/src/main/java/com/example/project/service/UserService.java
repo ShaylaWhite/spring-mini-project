@@ -24,6 +24,15 @@ public class UserService {
     // Constructor injection: Dependencies are injected through the constructor.
     // UserRepository represents the repository for user-related data access.
     // PasswordEncoder is used for securely hashing user passwords.
+
+    /**
+     * Constructs a new UserService instance.
+     *
+     * @param userRepository         The repository for user-related data access.
+     * @param passwordEncoder        The encoder used to securely hash user passwords.
+     * @param jwtUtils               The utility class for JSON Web Token (JWT) operations.
+     * @param authenticationManager  The authentication manager for user login.
+     */
     public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder,
                        JWTUtils jwtUtils,
                        @Lazy AuthenticationManager authenticationManager) {
