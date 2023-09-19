@@ -7,44 +7,37 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service                            //@Service is used to mark a class as a service layer component.
+@Service
 public class UserService {
     private final UserRepository userRepository;
-    // Declares a private, final field 'userRepository' of type 'UserRepository' in the UserService class.
-    // This field will hold the injected UserRepository bean, and once initialized, its value cannot be changed.
-
     private final PasswordEncoder passwordEncoder;
 
+    // Constructor injection: Dependencies are injected through the constructor.
+    // UserRepository represents the repository for user-related data access.
+    // PasswordEncoder is used for securely hashing user passwords.
     @Autowired
-
     public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Constructor that accepts a 'UserRepository' bean as a parameter and initializes the 'userRepository' field.
-
-
-    //Methods
-
     // Find User By Email Address Method
     public User findUserByEmailAddress(String emailAddress) {
+        // Use the userRepository to find a user by their email address.
         return userRepository.findUserByEmailAddress(emailAddress);
     }
 
     // Create User Method
-
-    public User createUser(User userobject){
-        // defines a method named createUser within a class, and it expects a User object (userObject) as a parameter
+    public User createUser(User userObject) {
+        // Check if a user with the same email address already exists.
         if (!userRepository.existsByEmailAddress(userObject.getEmailAddress())) {
+            // Securely hash the user's password before storing it.
             userObject.setPassword(passwordEncoder.encode(userObject.getPassword()));
+            // Save the new user to the database.
             return userRepository.save(userObject);
         } else {
-            throw new InformationExistException("user with email address " + userObject.getEmailAddress() + " already exists");
+            // If a user with the same email address exists, throw an exception.
+            throw new InformationExistException("User with email address " + userObject.getEmailAddress() + " already exists");
         }
     }
-
-
-
 }
-
