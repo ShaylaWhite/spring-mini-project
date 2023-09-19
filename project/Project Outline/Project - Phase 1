@@ -1,0 +1,80 @@
+Phase 1: Implement User and Security (JWT) andTest End Point
+
+
+1. Create User Model
+
+Define the User model with attributes like ID, Username, Password, and any other user-related information needed for your library system.
+2. Create UserProfile Model
+
+If you want to associate user profiles with registered users in your library system, define the UserProfile model with relevant attributes.
+3. Connect User Model to UserProfile Model
+
+Establish a relationship between the User model and the UserProfile model. You might use a one-to-one or one-to-many relationship, depending on your requirements.
+4. Generate Default Constructor, Getters, Setters, and toString for UserProfile Model
+
+Implement the basic constructor and accessor methods for the UserProfile model.
+5. Connect User Model to Item Model
+
+If your library system involves items associated with users (e.g., borrowed books), establish a relationship between the User model and the Item model.
+6. Generate Getters and Setters for Item Model
+
+Implement the accessor methods for the Item model.
+7. Connect User Model to Category Model
+
+If categories are associated with users in your library system, establish a relationship between the User model and the Category model.
+8. Generate Getters and Setters for Category Model
+
+Implement the accessor methods for the Category model.
+9. Create Default Constructor, Getters, Setters, and toString for User Model
+
+Implement the basic constructor and accessor methods for the User model.
+10. Create User Repository
+- Define a repository interface for the User model to perform database operations. Include custom JPA methods as needed.
+
+11. Create Methods in User Service
+- Implement methods in the user service layer to handle user-related operations specific to your library system. Start with a POST method for user registration.
+
+12. Create User Controller Endpoints
+- Define controller endpoints for user registration and other user-related actions within the context of your library system.
+
+13. Test with POSTMAN (200, 409)
+- Use POSTMAN to test the user registration endpoint, ensuring it returns the expected status codes (200 for success, 409 for conflicts).
+
+14. Add Spring Security to POM.xml
+- Include the Spring Security dependency in your project's pom.xml file.
+
+15. Set SecurityConfiguration
+- Configure Spring Security settings for your library system, such as specifying which endpoints require authentication.
+
+16. Add PasswordEncoder Bean in UserService
+- Implement a PasswordEncoder bean for securely hashing passwords.
+
+17. Test with POSTMAN (200, 409)
+- Test the authentication endpoint (e.g., login) using POSTMAN, ensuring it returns the correct status codes.
+
+18. Verify Encrypted Password from the H2 Database
+- Confirm that user passwords are securely hashed and stored in the H2 database.
+
+19. Add Find by Email Address
+- Implement a method to find users by their email addresses, which can be useful in the context of a library system.
+
+20. Implement UserDetails and UserDetailsService
+- Implement the UserDetails interface and create a UserDetailsService tailored to your library system.
+
+21. Update POM.xml and application-dev.properties
+- Update your project's configuration files to integrate Spring Security within your library API.
+
+22. Add JWTUtils and JwtRequestFilter
+- Implement utility classes for handling JWTs and create a filter for JWT authentication, which may be specific to your library system's needs.
+
+23. Updated SecurityConfiguration
+- Configure Spring Security settings, including JWT authentication, in a way that aligns with your library system's requirements.
+
+24. Add LoginRequest and LoginResponse
+- Define request and response objects for user login, considering any specific data you need to include in these objects for your library system.
+
+25. Update UserService and UserController
+- Modify the service and controller to handle user login and other user-related actions within the context of your library system.
+
+26. Test Create New User Endpoint and Login Endpoint
+- Test the user registration and login endpoints with POSTMAN, ensuring they return the expected results in the context of your library API.
