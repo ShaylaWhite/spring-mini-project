@@ -76,17 +76,7 @@ public class UserService {
             throw new InformationExistException("User with email address " + userObject.getEmailAddress() + " already exists");
         }
     }
-//    // Login in User Method
-//    public Optional<String> loginUser(LoginRequest loginRequest) {
-//        UsernamePasswordAuthenticationToken authenticationToken = new
-//                UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword());
-//        try {
-//            Authentication authentication = authenticationManager.authenticate(authenticationToken);
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//            MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
-//            return Optional.of(jwtUtils.generateJwtToken(myUserDetails));
-//        } catch (Exception e) {
-//            return Optional.empty();
-//        }
-//    }
+    public Optional<String> loginUser(LoginRequest loginRequest) {
+
+    }
 }
