@@ -49,7 +49,6 @@ public class LibraryService {
     public Optional<Book> getBook(Long bookId) {
         return bookRepository.findById(bookId);
     }
-
     /**
      * Create a new book.
      *
@@ -84,6 +83,7 @@ public class LibraryService {
     }
 
 
+
     /**
      * Retrieve a list of all authors.
      *
@@ -101,6 +101,28 @@ public class LibraryService {
      */
     public Optional<Author> getAuthor(Long authorId) {
         return authorRepository.findById(authorId);
+    }
+    /**
+     * Create a new author.
+     *
+     * @param authorName The name of the author to be created.
+     * @return The newly created author.
+     */
+    public Author createAuthor(String authorName) {
+        // Check if the author with the given name already exists
+        Author existingAuthor = authorRepository.findByName(authorName);
+
+        if (existingAuthor != null) {
+            // Author with the same name already exists, return the existing author
+            return existingAuthor;
+        } else {
+            // Author with the given name doesn't exist, create a new author
+            Author newAuthor = new Author();
+            newAuthor.setName(authorName);
+
+            // Save the new author entity to the database
+            return authorRepository.save(newAuthor);
+        }
     }
 
     /**
