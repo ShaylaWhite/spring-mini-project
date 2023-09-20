@@ -1,5 +1,6 @@
 package com.example.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -14,12 +15,13 @@ public class Book {
     @Column(nullable = false)
     private String title;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
+    @JoinColumn(name = "author_id")
     private Author author;
-
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @Column(nullable = false)
@@ -28,9 +30,11 @@ public class Book {
     @Column(nullable = false)
     private boolean available;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "borrower_id")
     private User borrower;
+
 
     // Constructors, getters, setters, and other methods.
 

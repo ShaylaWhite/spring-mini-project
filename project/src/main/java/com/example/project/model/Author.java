@@ -1,5 +1,7 @@
 package com.example.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -24,6 +26,8 @@ public class Author {
 
 
     // Add a relationship mapping to represent the "Author can have many Books" relationship.
+
+    @JsonIgnore
     @OneToMany(mappedBy = "author")
     private List<Book> books;
 

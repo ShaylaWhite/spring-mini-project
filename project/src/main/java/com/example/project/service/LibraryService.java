@@ -33,6 +33,17 @@ public class LibraryService {
     }
 
     /**
+     * Find an author by their unique ID.
+     *
+     * @param authorId The ID of the author to retrieve.
+     * @return The author if found, or null if not found.
+     */
+    public Author findById(Long authorId) {
+        return authorRepository.findById(authorId).orElse(null);
+    }
+
+
+    /**
      * Retrieve a list of all books.
      *
      * @return List<Book> A list of all books.
@@ -50,16 +61,18 @@ public class LibraryService {
     public Optional<Book> getBook(Long bookId) {
         return bookRepository.findById(bookId);
     }
+
     /**
      * Create a new book associated with an author.
      *
-     * @param authorId The ID of the author to associate the book with.
+     * @param authorId  The ID of the author to associate the book with.
      * @param categoryId The ID of the category to associate the book with.
-     * @param title The title of the book.
-     * @param isbn The ISBN of the book.
+     * @param title     The title of the book.
+     * @param isbn      The ISBN of the book.
      * @return The newly created book.
      * @throws InformationExistException if a book with the same title already exists.
-     * @throws AuthorNotFoundException if the specified author ID is not found.
+     * @throws AuthorNotFoundException   if the specified author ID is not found.
+     * @throws CategoryNotFoundException if the specified category ID is not found.
      */
     public Book createBook(Long authorId, Long categoryId, String title, String isbn) {
         if (title == null || title.isEmpty()) {
@@ -87,9 +100,10 @@ public class LibraryService {
             book.setAvailable(true);
             book.setBorrower(null);
 
-            return bookRepository.save(book);
+            return bookRepository.save(book); // Add this return statement
         }
     }
+
 
     /**
      * Retrieve a list of all authors.

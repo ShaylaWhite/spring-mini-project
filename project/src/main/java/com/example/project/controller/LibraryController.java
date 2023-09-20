@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.exception.AuthorNotFoundException;
+import com.example.project.exception.CategoryNotFoundException;
 import com.example.project.exception.InformationExistException;
 import com.example.project.model.Author;
 import com.example.project.model.Book;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.project.exception.InformationNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +23,6 @@ public class LibraryController {
     @Autowired
     private LibraryService libraryService;
 
-    // Get a list of all books.
     @GetMapping(path = "/books") // GET http://localhost:9092/api/library/books
     public List<Book> getBooks() {
         return libraryService.getBooks();
@@ -33,17 +34,25 @@ public class LibraryController {
         Optional<Book> book = libraryService.getBook(bookId);
         return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    // Create a book associated with an author.
-    @PostMapping("/authors/{authorId}/books") // POST http://localhost:9092/api/library/authors/{authorId}/books
+    @PostMapping("/authors/{authorId}/books")
     public ResponseEntity<?> createBook(@PathVariable Long authorId,
                                         @RequestParam Long categoryId,
                                         @RequestParam String title,
                                         @RequestParam String isbn) {
-        Book createdBook = libraryService.createBook(authorId, categoryId, title, isbn);
-        return ResponseEntity.ok("Book created successfully");
+        try {
+            // Call the bookService to create the book with the retrieved author
+            libraryService.createBook(authorId, categoryId, title, isbn);
+            return ResponseEntity.ok("Book created successfully");
+        } catch (AuthorNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author not found");
+        } catch (CategoryNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
+        } catch (InformationExistException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Book with the same title already exists");
+        } catch (InformationNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title cannot be empty");
+        }
     }
-
-
 
     // Get a list of all authors.
     @GetMapping(path = "/authors") // GET http://localhost:9092/api/library/authors
