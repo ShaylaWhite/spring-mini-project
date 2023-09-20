@@ -1,15 +1,14 @@
 package com.example.project.controller;
 
+import com.example.project.exception.InformationExistException;
 import com.example.project.model.Author;
 import com.example.project.model.Book;
 import com.example.project.model.Category;
 import com.example.project.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,4 +81,36 @@ public class LibraryController {
     public List<Category> getCategories() {
         return libraryService.getCategories();
     }
+
+    /**
+     * Get a Category by its unique ID.
+     *
+     * @param categoryId The ID of the category to retrieve.
+     * @return ResponseEntity<Category> The category if found, or 404 Not Found if not found.
+     */
+    @GetMapping("/categories/{categoryId}") // GET http://localhost:9092/api/library/categories/{categoryId}
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryId) {
+        Optional<Category> category = libraryService.getCategoryById(categoryId); // Use categoryService
+        if (category.isPresent()) {
+            return ResponseEntity.ok(category.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    /**
+     * Create a new category.
+     *
+     * @param category The category object representing the category to be created.
+     * @return ResponseEntity<Category> The newly created category, or a conflict response if a category with the same name already exists.
+     */
+    @PostMapping("/categories")
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+        try {
+            Category createdCategory = libraryService.createCategory(category);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
+        } catch (InformationExistException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
 }

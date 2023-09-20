@@ -32,15 +32,17 @@ public class LibraryService {
 
     // BOOK OPERATIONS
 
-    // Retrieve a list of all books
+    /**
+     * Retrieve a list of all books.
+     *
+     * @return List<Book> A list of all books.
+     */
     public List<Book> getBooks() {
         return bookRepository.findAll();
     }
 
-// Retrieve a book by ID
-
     /**
-     * Retrieves a book by its unique ID.
+     * Retrieve a book by its unique ID.
      *
      * @param bookId The ID of the book to retrieve.
      * @return An Optional containing the book if found, or empty if not found.
@@ -49,6 +51,31 @@ public class LibraryService {
         return bookRepository.findById(bookId);
     }
 
+    /**
+     * Create a new book.
+     *
+     * @param book The book object representing the book to be created.
+     * @return The newly created book.
+     * @throws InformationExistException if a book with the same title already exists.
+     */
+    public Book createBook(Book book) {
+        Book existingBook = bookRepository.findByTitle(book.getTitle());
+
+        if (existingBook != null) {
+            throw new InformationExistException("Book with the same title already exists.");
+        } else {
+            // You may need to retrieve the author from the AuthorRepository based on the author's name
+            Author author = libraryService.getAuthorByName(book.getAuthorName());
+
+            // Set the author for the book
+            book.setAuthor(author);
+
+            return bookRepository.save(book);
+        }
+    }
+
+
+
 // AUTHOR OPERATIONS
 
     // Retrieve a list of all authors
@@ -56,7 +83,7 @@ public class LibraryService {
         return authorRepository.findAll();
     }
 
-// Retrieve an author by ID
+   // Retrieve an author by ID
 
     /**
      * Retrieves an author by their unique ID.
@@ -68,13 +95,18 @@ public class LibraryService {
         return authorRepository.findById(authorId);
     }
 
+    // Create a new author
+
 // CATEGORY OPERATIONS
 
     // Retrieve a list of all categories
     public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
-
+    // Retrieve a category by ID
+    public Optional<Category> getCategoryById(Long categoryId) {
+        return categoryRepository.findById(categoryId);
+    }
 // Create a new category
 
     /**

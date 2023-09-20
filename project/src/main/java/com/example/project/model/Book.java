@@ -101,4 +101,13 @@ public class Book {
                 ", borrower=" + borrower +
                 '}';
     }
+
+    public String getAuthorName() {
+        if (author != null) {
+            return author.getName(); // 'getName()' method in the Author class
+        } else {
+            return null; // Return null if there's no associated author
+        }
+    }
+
 }
