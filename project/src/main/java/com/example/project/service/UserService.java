@@ -39,6 +39,8 @@ public class UserService {
      * @param passwordEncoder        The encoder used to securely hash user passwords.
      * @param jwtUtils               The utility class for JSON Web Token (JWT) operations.
      * @param authenticationManager  The authentication manager for user login.
+     *                               The @Lazy annotation in Spring is used to specify that a bean should be lazily initialized. When a bean is marked as lazy, it means that the bean's initialization is deferred until it's actually needed,
+     *                               rather than being eagerly initialized when the Spring application context starts up.
      */
     public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder,
                        JWTUtils jwtUtils,
