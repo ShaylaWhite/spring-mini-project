@@ -11,4 +11,12 @@ public class LibraryController {
 
     @Autowired
     private LibraryService libraryService;
+
+    //Books
+
+
+    //Authors
+
+    // Categories
+
 }
