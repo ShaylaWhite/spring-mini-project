@@ -1,5 +1,6 @@
 package com.example.project.service;
 
+import com.example.project.exception.AuthorNotFoundException;
 import com.example.project.exception.InformationExistException;
 import com.example.project.model.Author;
 import com.example.project.model.Book;
@@ -19,7 +20,6 @@ public class LibraryService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
 
-    //Constructor injection allows you to provide instances of these repositories when creating a LibraryService object,
     @Autowired
     public LibraryService(
             CategoryRepository categoryRepository,
@@ -29,8 +29,6 @@ public class LibraryService {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
     }
-
-    // BOOK OPERATIONS
 
     /**
      * Retrieve a list of all books.
@@ -59,37 +57,42 @@ public class LibraryService {
      * @throws InformationExistException if a book with the same title already exists.
      */
     public Book createBook(Book book) {
-        // Check if a book with the same title already exists
+        if (book.getTitle() == null || book.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be empty.");
+        }
+        if (book.getAuthorName() == null || book.getAuthorName().isEmpty()) {
+            throw new IllegalArgumentException("Author name cannot be empty.");
+        }
+
         Book existingBook = bookRepository.findByTitle(book.getTitle());
 
         if (existingBook != null) {
             throw new InformationExistException("Book with the same title already exists.");
+        } else {
+            Author author = authorRepository.findByName(book.getAuthorName());
+
+            if (author == null) {
+                // Handle author not found based on your application's logic (e.g., throw an exception or create a new author).
+                throw new AuthorNotFoundException("Author not found for name: " + book.getAuthorName());
+            }
+
+            book.setAuthor(author);
+
+            return bookRepository.save(book);
         }
-
-        // Retrieve the author by name (assuming you have a method in AuthorRepository)
-        Author author = authorRepository.findByName(book.getAuthorName());
-
-        // If the author does not exist, you can handle it as needed, e.g., throw an exception or create a new author.
-
-        // Set the author for the book
-        book.setAuthor(author);
-
-        return bookRepository.save(book);
     }
 
-
-
-// AUTHOR OPERATIONS
-
-    // Retrieve a list of all authors
+    /**
+     * Retrieve a list of all authors.
+     *
+     * @return List<Author> A list of all authors.
+     */
     public List<Author> getAuthors() {
         return authorRepository.findAll();
     }
 
-   // Retrieve an author by ID
-
     /**
-     * Retrieves an author by their unique ID.
+     * Retrieve an author by their unique ID.
      *
      * @param authorId The ID of the author to retrieve.
      * @return An Optional containing the author if found, or empty if not found.
@@ -98,28 +101,37 @@ public class LibraryService {
         return authorRepository.findById(authorId);
     }
 
-    // Create a new author
-
-// CATEGORY OPERATIONS
-
-    // Retrieve a list of all categories
+    /**
+     * Retrieve a list of all categories.
+     *
+     * @return List<Category> A list of all categories.
+     */
     public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
-    // Retrieve a category by ID
+
+    /**
+     * Retrieve a category by its unique ID.
+     *
+     * @param categoryId The ID of the category to retrieve.
+     * @return An Optional containing the category if found, or empty if not found.
+     */
     public Optional<Category> getCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId);
     }
-// Create a new category
 
     /**
-     * Creates a new category.
+     * Create a new category.
      *
      * @param category The category object representing the category to be created.
      * @return The newly created category.
      * @throws InformationExistException if a category with the same name already exists.
      */
     public Category createCategory(Category category) {
+        if (category.getName() == null || category.getName().isEmpty()) {
+            throw new IllegalArgumentException("Category name cannot be empty.");
+        }
+
         Category existingCategory = categoryRepository.findByName(category.getName());
 
         if (existingCategory != null) {

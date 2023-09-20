@@ -72,8 +72,6 @@ public class LibraryController {
 
 
 
-
-
     /**
      * Get a list of all authors.
      *
