@@ -1,6 +1,6 @@
 package com.example.project.security;
 
-import com.example.todo.service.MyUserDetailsService;
+import com.example.project.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
