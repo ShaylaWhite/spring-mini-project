@@ -59,19 +59,22 @@ public class LibraryService {
      * @throws InformationExistException if a book with the same title already exists.
      */
     public Book createBook(Book book) {
+        // Check if a book with the same title already exists
         Book existingBook = bookRepository.findByTitle(book.getTitle());
 
         if (existingBook != null) {
             throw new InformationExistException("Book with the same title already exists.");
-        } else {
-            // You may need to retrieve the author from the AuthorRepository based on the author's name
-            Author author = libraryService.getAuthorByName(book.getAuthorName());
-
-            // Set the author for the book
-            book.setAuthor(author);
-
-            return bookRepository.save(book);
         }
+
+        // Retrieve the author by name (assuming you have a method in AuthorRepository)
+        Author author = authorRepository.findByName(book.getAuthorName());
+
+        // If the author does not exist, you can handle it as needed, e.g., throw an exception or create a new author.
+
+        // Set the author for the book
+        book.setAuthor(author);
+
+        return bookRepository.save(book);
     }
 
 
