@@ -44,7 +44,7 @@ POST /api/return/{bookId}: Return a book (Library Member, requires JWT)
 []Define access control (Admin, Public, Library Member) and JWT requirements for each endpoint.
 
 Error Handling:
-[]Implement error handling mechanisms for API responses.
+[x]Implement error handling mechanisms for API responses.
 
 Validation:
 []Add input validation for API data to ensure data integrity.
