@@ -3,6 +3,7 @@ package com.example.project.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -23,6 +24,10 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
+
+    // Add a relationship mapping to represent the "User can have many Books" relationship.
+    @OneToMany(mappedBy = "borrower")
+    private List<Book> borrowedBooks;
 
     public Long getId() {
         return id;
