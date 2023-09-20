@@ -109,6 +109,16 @@ public class LibraryController {
       }
   }
 
+// Delete Author By Id
+@DeleteMapping("/authors/{authorId}") // DELETE http://localhost:9092/api/library/authors/{authorId}
+public ResponseEntity<?> deleteAuthor(@PathVariable Long authorId) {
+    try {
+        libraryService.deleteAuthor(authorId);
+        return ResponseEntity.ok("Author deleted successfully");
+    } catch (AuthorNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author not found");
+    }
+}
 
 
 
