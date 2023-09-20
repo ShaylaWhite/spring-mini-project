@@ -35,5 +35,13 @@ public class UserController {
     public User createUser(@RequestBody User userObject) {
         return userService.createUser(userObject);
     }
+    /**
+     * Login User - POST endpoint
+     *
+     * @param loginRequest The LoginRequest object containing the user's email address and password.
+     * @return A LoginResponse object containing a JWT token upon successful login.
+     */
+
+
 }
 
