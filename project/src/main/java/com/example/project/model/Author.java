@@ -13,6 +13,16 @@ public class Author {
     @Column(nullable = false)
     private String name;
 
+    // No-argument constructor required by JPA
+    protected Author() {
+    }
+
+    // Constructor that accepts authorName
+    public Author(String authorName) {
+        this.name = authorName;
+    }
+
+
     // Add a relationship mapping to represent the "Author can have many Books" relationship.
     @OneToMany(mappedBy = "author")
     private List<Book> books;

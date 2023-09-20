@@ -1,6 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.exception.AuthorNotFoundException;
+import com.example.project.exception.CategoryNotFoundException;
 import com.example.project.exception.InformationExistException;
 import com.example.project.exception.InformationNotFoundException;
 import com.example.project.model.Author;
@@ -50,39 +51,45 @@ public class LibraryService {
         return bookRepository.findById(bookId);
     }
     /**
-     * Create a new book.
+     * Create a new book associated with an author.
      *
-     * @param book The book object representing the book to be created.
+     * @param authorId The ID of the author to associate the book with.
+     * @param categoryId The ID of the category to associate the book with.
+     * @param title The title of the book.
+     * @param isbn The ISBN of the book.
      * @return The newly created book.
      * @throws InformationExistException if a book with the same title already exists.
+     * @throws AuthorNotFoundException if the specified author ID is not found.
      */
-    public Book createBook(Book book) {
-        if (book.getTitle() == null || book.getTitle().isEmpty()) {
+    public Book createBook(Long authorId, Long categoryId, String title, String isbn) {
+        if (title == null || title.isEmpty()) {
             throw new InformationNotFoundException("Title cannot be empty.");
         }
-        if (book.getAuthorName() == null || book.getAuthorName().isEmpty()) {
-            throw new InformationNotFoundException("Author name cannot be empty.");
-        }
 
-        Book existingBook = bookRepository.findByTitle(book.getTitle());
+        // Check if a book with the same title already exists
+        Book existingBook = bookRepository.findByTitle(title);
 
         if (existingBook != null) {
             throw new InformationExistException("Book with the same title already exists.");
         } else {
-            Author author = authorRepository.findByName(book.getAuthorName());
+            Author author = authorRepository.findById(authorId)
+                    .orElseThrow(() -> new AuthorNotFoundException("Author not found for ID: " + authorId));
 
-            if (author == null) {
-                // Handle author not found based on your application's logic (e.g., throw an exception or create a new author).
-                throw new AuthorNotFoundException("Author not found for name: " + book.getAuthorName());
-            }
+            Category category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new CategoryNotFoundException("Category not found for ID: " + categoryId));
 
-            book.setAuthor(author); // Set the author before saving the book
+            // Create a new Book object and set its properties
+            Book book = new Book();
+            book.setTitle(title);
+            book.setAuthor(author);
+            book.setCategory(category);
+            book.setIsbn(isbn);
+            book.setAvailable(true);
+            book.setBorrower(null);
 
             return bookRepository.save(book);
         }
     }
-
-
 
     /**
      * Retrieve a list of all authors.
@@ -116,14 +123,14 @@ public class LibraryService {
             // Author with the same name already exists, return the existing author
             return existingAuthor;
         } else {
-            // Author with the given name doesn't exist, create a new author
-            Author newAuthor = new Author();
-            newAuthor.setName(authorName);
+            // Author with the given name doesn't exist, create a new author using the constructor
+            Author newAuthor = new Author(authorName); // Use the constructor that accepts authorName
 
             // Save the new author entity to the database
             return authorRepository.save(newAuthor);
         }
     }
+
 
     /**
      * Retrieve a list of all categories.

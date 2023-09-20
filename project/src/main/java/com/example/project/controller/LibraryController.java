@@ -1,5 +1,6 @@
 package com.example.project.controller;
 
+import com.example.project.exception.AuthorNotFoundException;
 import com.example.project.exception.InformationExistException;
 import com.example.project.model.Author;
 import com.example.project.model.Book;
@@ -20,116 +21,65 @@ public class LibraryController {
     @Autowired
     private LibraryService libraryService;
 
-    /**
-     * Get a list of all books.
-     *
-     * @return List<Book> A list of all books.
-     */
+    // Get a list of all books.
     @GetMapping(path = "/books") // GET http://localhost:9092/api/library/books
     public List<Book> getBooks() {
         return libraryService.getBooks();
     }
 
-    /**
-     * Get a book by its unique ID.
-     *
-     * @param bookId The ID of the book to retrieve.
-     * @return ResponseEntity<Book> The book if found, or 404 Not Found if not found.
-     */
+    // Get a book by its unique ID.
     @GetMapping(path = "/books/{bookId}") // GET http://localhost:9092/api/library/books/{bookId}
     public ResponseEntity<Book> getBook(@PathVariable Long bookId) {
         Optional<Book> book = libraryService.getBook(bookId);
-        if (book.isPresent()) {
-            return ResponseEntity.ok(book.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-
-    /**
-     * Create a new book.
-     *
-     * @param book The book object representing the book to be created.
-     * @return ResponseEntity<Book> The newly created book, or a conflict response if a book with the same title already exists.
-     */
-    @PostMapping("/books") // POST http://localhost:9092/api/library/books
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
-        try {
-            Book createdBook = libraryService.createBook(book);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
-        } catch (InformationExistException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    // Create a book associated with an author.
+    @PostMapping("/authors/{authorId}/books") // POST http://localhost:9092/api/library/authors/{authorId}/books
+    public ResponseEntity<?> createBook(@PathVariable Long authorId,
+                                        @RequestParam Long categoryId,
+                                        @RequestParam String title,
+                                        @RequestParam String isbn) {
+        Book createdBook = libraryService.createBook(authorId, categoryId, title, isbn);
+        return ResponseEntity.ok("Book created successfully");
     }
 
 
 
-
-
-
-
-
-
-
-    /**
-     * Get a list of all authors.
-     *
-     * @return List<Author> A list of all authors.
-     */
+    // Get a list of all authors.
     @GetMapping(path = "/authors") // GET http://localhost:9092/api/library/authors
     public List<Author> getAuthors() {
         return libraryService.getAuthors();
     }
 
-    /**
-     * Get an author by their unique ID.
-     *
-     * @param authorId The ID of the author to retrieve.
-     * @return ResponseEntity<Author> The author if found, or 404 Not Found if not found.
-     */
+    // Get an author by their unique ID.
     @GetMapping(path = "/authors/{authorId}") // GET http://localhost:9092/api/library/authors/{authorId}
     public ResponseEntity<Author> getAuthor(@PathVariable Long authorId) {
         Optional<Author> author = libraryService.getAuthor(authorId);
-        if (author.isPresent()) {
-            return ResponseEntity.ok(author.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return author.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /**
-     * Get a list of all categories.
-     *
-     * @return List<Category> A list of all categories.
-     */
+    // Create a new author.
+    @PostMapping(path = "/authors") // POST http://localhost:9092/api/library/authors
+    public ResponseEntity<Author> createAuthor(@RequestParam String authorName) {
+        Author createdAuthor = libraryService.createAuthor(authorName);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAuthor);
+    }
+
+    // Get a list of all categories.
     @GetMapping(path = "/categories") // GET http://localhost:9092/api/library/categories
     public List<Category> getCategories() {
         return libraryService.getCategories();
     }
 
-    /**
-     * Get a Category by its unique ID.
-     *
-     * @param categoryId The ID of the category to retrieve.
-     * @return ResponseEntity<Category> The category if found, or 404 Not Found if not found.
-     */
-    @GetMapping("/categories/{categoryId}") // GET http://localhost:9092/api/library/categories/{categoryId}
+    // Get a Category by its unique ID.
+    @GetMapping(path = "/categories/{categoryId}") // GET http://localhost:9092/api/library/categories/{categoryId}
     public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryId) {
-        Optional<Category> category = libraryService.getCategoryById(categoryId); // Use categoryService
-        if (category.isPresent()) {
-            return ResponseEntity.ok(category.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<Category> category = libraryService.getCategoryById(categoryId);
+        return category.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    /**
-     * Create a new category.
-     *
-     * @param category The category object representing the category to be created.
-     * @return ResponseEntity<Category> The newly created category, or a conflict response if a category with the same name already exists.
-     */
-    @PostMapping("/categories") // POST http://localhost:9092//api/library/categories
+
+    // Create a new category.
+    @PostMapping(path = "/categories") // POST http://localhost:9092/api/library/categories
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         try {
             Category createdCategory = libraryService.createCategory(category);
@@ -138,5 +88,4 @@ public class LibraryController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
-
 }
