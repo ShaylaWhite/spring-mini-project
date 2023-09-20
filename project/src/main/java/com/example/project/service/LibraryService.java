@@ -185,4 +185,36 @@ public class LibraryService {
             return categoryRepository.save(category);
         }
     }
+
+
+    // Update an existing category by ID
+    public Category updateCategoryName(Long categoryId, String newName) {
+        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+
+        if (categoryOptional.isPresent()) {
+            Category existingCategory = categoryOptional.get();
+
+            if (newName.equals(existingCategory.getName())) {
+                throw new InformationExistException("The category name is already " + newName);
+            } else {
+                existingCategory.setName(newName);
+                return categoryRepository.save(existingCategory);
+            }
+        } else {
+            throw new InformationNotFoundException("Category with id " + categoryId + " not found.");
+        }
+    }
+
+
+    // Delete a category by ID
+    public Optional<Category> deleteCategory(Long categoryId) {
+        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+
+        if (categoryOptional.isPresent()) {
+            categoryRepository.deleteById(categoryId);
+            return categoryOptional;
+        } else {
+            throw new InformationNotFoundException("Category with id " + categoryId + " not found");
+        }
+    }
 }
