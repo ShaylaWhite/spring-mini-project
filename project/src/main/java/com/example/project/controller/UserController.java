@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 /**
  * UserController is a Spring REST controller that handles user-related operations.
  */
@@ -50,6 +52,8 @@ public class UserController {
      */
     @PostMapping(path = "/login/") // http://localhost:9092/auth/users/login/
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+        //Step 1 -  attempt user login and retrieve a JWT token.
+        Optional<String> jwtToken = userService.loginUser(loginRequest);
         return null;
     }
     }
