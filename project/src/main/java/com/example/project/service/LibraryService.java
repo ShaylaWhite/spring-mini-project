@@ -76,11 +76,12 @@ public class LibraryService {
                 throw new AuthorNotFoundException("Author not found for name: " + book.getAuthorName());
             }
 
-            book.setAuthor(author);
+            book.setAuthor(author); // Set the author before saving the book
 
             return bookRepository.save(book);
         }
     }
+
 
     /**
      * Retrieve a list of all authors.
