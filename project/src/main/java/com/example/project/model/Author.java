@@ -1,5 +1,8 @@
 package com.example.project.model;
 
+import javax.persistence.*;
+import java.util.List;
+
 @Entity
 @Table(name = "authors")
 public class Author {
