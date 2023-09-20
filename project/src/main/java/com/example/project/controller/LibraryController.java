@@ -46,6 +46,34 @@ public class LibraryController {
         }
     }
 
+
+    /**
+     * Create a new book.
+     *
+     * @param book The book object representing the book to be created.
+     * @return ResponseEntity<Book> The newly created book, or a conflict response if a book with the same title already exists.
+     */
+    @PostMapping("/books") // POST http://localhost:9092/api/library/books
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        try {
+            Book createdBook = libraryService.createBook(book);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
+        } catch (InformationExistException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Get a list of all authors.
      *
@@ -103,7 +131,7 @@ public class LibraryController {
      * @param category The category object representing the category to be created.
      * @return ResponseEntity<Category> The newly created category, or a conflict response if a category with the same name already exists.
      */
-    @PostMapping("/categories")
+    @PostMapping("/categories") // POST http://localhost:9092//api/library/categories
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         try {
             Category createdCategory = libraryService.createCategory(category);
