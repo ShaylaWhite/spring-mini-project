@@ -5,10 +5,13 @@ import com.example.project.model.User;
 import com.example.project.repository.UserRepository;
 import com.example.project.request.LoginRequest;
 import com.example.project.security.JWTUtils;
+import com.example.project.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -80,8 +83,14 @@ public class UserService {
             throw new InformationExistException("User with email address " + userObject.getEmailAddress() + " already exists");
         }
     }
+    /**
+     * Attempt to log in a user with the provided login credentials.
+     *
+     * @param loginRequest The LoginRequest object containing user login credentials.
+     * @return An Optional containing a JWT token if authentication is successful, or an empty Optional if authentication fails.
+     */
     public Optional<String> loginUser(LoginRequest loginRequest) {
-// Create an authentication token with the user's email address and password.
+        // Create an authentication token with the user's email address and password.
         UsernamePasswordAuthenticationToken authenticationToken = new
                 UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword());
 
@@ -100,5 +109,7 @@ public class UserService {
         } catch (Exception e) {
             // If authentication fails, return an empty optional.
             return Optional.empty();
+        }
     }
 }
+
