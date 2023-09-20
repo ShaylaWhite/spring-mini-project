@@ -30,7 +30,7 @@ public class LibraryService {
     }
 
 
-
+// B O O K S
 
     /**
      * Retrieve a list of all books.
@@ -143,16 +143,7 @@ public class LibraryService {
 
 
 
-
-
-
-
-
-
-
-
-
-
+// AUTHORS
 
     /**
      * Find an author by their unique ID.
@@ -203,7 +194,49 @@ public class LibraryService {
         }
     }
 
+    /**
+     * Update author details by their ID.
+     *
+     * @param authorId     The ID of the author to update.
+     * @param updatedAuthor The updated author details.
+     * @return The updated author entity.
+     * @throws AuthorNotFoundException if the specified author ID is not found.
+     */
+    public Author updateAuthor(Long authorId, Author updatedAuthor) {
+        Optional<Author> optionalAuthor = authorRepository.findById(authorId);
 
+        if (optionalAuthor.isPresent()) {
+            Author authorToUpdate = optionalAuthor.get();
+            // Update the fields of the existing author with the new values
+            authorToUpdate.setName(updatedAuthor.getName());
+
+            // Save the updated author to the repository
+            return authorRepository.save(authorToUpdate);
+        } else {
+            throw new AuthorNotFoundException("Author not found"); // Author with the given ID not found
+        }
+    }
+
+    /**
+     * Delete an author by their ID.
+     *
+     * @param authorId The ID of the author to delete.
+     * @return True if the author was successfully deleted, false if the author was not found.
+     */
+    public boolean deleteAuthor(Long authorId) {
+        Optional<Author> optionalAuthor = authorRepository.findById(authorId);
+
+        if (optionalAuthor.isPresent()) {
+            Author authorToDelete = optionalAuthor.get();
+            authorRepository.delete(authorToDelete);
+            return true; // Author was successfully deleted
+        } else {
+            return false; // Author with the given ID not found
+        }
+    }
+
+
+// CATEGORY
     /**
      * Retrieve a list of all categories.
      *
