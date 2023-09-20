@@ -29,22 +29,32 @@ public class LibraryService {
     }
 
     // BOOK OPERATIONS
+
     // Retrieve a list of all books
-    public List<Book> getAllBooks() {
+    public List<Book> getBooks() {
         return bookRepository.findAll();
     }
 
+    // Retrieve a book by ID
+    public Optional<Book> getBook(Long bookId) {
+        return bookRepository.findById(bookId);
+    }
 
     // AUTHOR OPERATIONS
+
     // Retrieve a list of all authors
-    public List<Author> getAuthor() {
+    public List<Author> getAuthors() {
         return authorRepository.findAll();
     }
 
+    // Retrieve an author by ID
+    public Optional<Author> getAuthor(Long authorId) {
+        return authorRepository.findById(authorId);
+    }
 
     // CATEGORY OPERATIONS
-    // Retrieve a list of all categories
 
+    // Retrieve a list of all categories
     public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
