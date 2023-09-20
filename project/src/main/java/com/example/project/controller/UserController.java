@@ -4,6 +4,7 @@ import com.example.project.model.User;
 import com.example.project.reponse.LoginResponse;
 import com.example.project.request.LoginRequest;
 import com.example.project.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,10 +53,17 @@ public class UserController {
      */
     @PostMapping(path = "/login/") // http://localhost:9092/auth/users/login/
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
-        //Step 1 -  attempt user login and retrieve a JWT token.
+
         Optional<String> jwtToken = userService.loginUser(loginRequest);
-        return null;
-    }
+        //Step 1 -  attempt user login and retrieve a JWT token.
+        //This code tries to log a user in using the information provided in loginRequest. If the login is successful, it stores a JWT token in the jwtToken variable.
+        // If the login fails, the variable remains empty. The Optional is used to handle both scenarios.
+        if (jwtToken.isPresent()) {
+            return ResponseEntity.ok(new LoginResponse(jwtToken.get()));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("Authentication failed"));
     }
 }
+}
+
 
