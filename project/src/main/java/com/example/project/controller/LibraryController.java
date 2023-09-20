@@ -97,4 +97,16 @@ public class LibraryController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+
+    // Update an existing category by ID
+    @PutMapping(path = "/categories/{categoryId}") // PUT http://localhost:9092/api/categories/{categoryId}
+    public Category updateCategory(@PathVariable(value = "categoryId") Long categoryId, @RequestBody Category category) {
+        return libraryService.updateCategoryName(categoryId, String.valueOf(category));
+    }
+
+    // Delete a category by ID
+    @DeleteMapping(path = "/categories/{categoryId}") // DELETE http://localhost:9092/api/categories/{categoryId}
+    public Optional<Category> deleteCategory(@PathVariable(value = "categoryId") Long categoryId) {
+        return libraryService.deleteCategory(categoryId);
+    }
 }
