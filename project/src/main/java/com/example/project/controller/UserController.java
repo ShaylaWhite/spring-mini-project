@@ -1,7 +1,10 @@
 package com.example.project.controller;
 
 import com.example.project.model.User;
+import com.example.project.reponse.LoginResponse;
+import com.example.project.request.LoginRequest;
 import com.example.project.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,11 +40,18 @@ public class UserController {
     }
     /**
      * Login User - POST endpoint
+     * Maps POST requests to the "/login/" path.
+     * Handles user login via HTTP POST request.
      *
-     * @param loginRequest The LoginRequest object containing the user's email address and password.
-     * @return A LoginResponse object containing a JWT token upon successful login.
+     * @param loginRequest The LoginRequest object received in the request body, containing user login information.
+     * @return A ResponseEntity representing the entire HTTP response, including status code, headers, and response body.
+     *         The response body is of type LoginResponse, which typically contains a JWT token upon successful login.
+     *         This method maps POST requests to the "/login/" path and is accessible from outside the class.
      */
-
-
+    @PostMapping(path = "/login/") // http://localhost:9092/auth/users/login/
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+        return null;
+    }
+    }
 }
 
