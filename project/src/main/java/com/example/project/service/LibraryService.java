@@ -1,9 +1,6 @@
 package com.example.project.service;
 
-import com.example.project.exception.AuthorNotFoundException;
-import com.example.project.exception.CategoryNotFoundException;
-import com.example.project.exception.InformationExistException;
-import com.example.project.exception.InformationNotFoundException;
+import com.example.project.exception.*;
 import com.example.project.model.Author;
 import com.example.project.model.Book;
 import com.example.project.model.Category;
@@ -103,7 +100,24 @@ public class LibraryService {
             return bookRepository.save(book); // Add this return statement
         }
     }
+    // Update book details by its ID
+    public Book updateBook(Long bookId, Book updatedBook) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
 
+        if (optionalBook.isPresent()) {
+            Book bookToUpdate = optionalBook.get();
+            // Update the fields of the existing book with the new values
+            bookToUpdate.setTitle(updatedBook.getTitle());
+            bookToUpdate.setAuthor(updatedBook.getAuthor());
+            bookToUpdate.setCategory(updatedBook.getCategory());
+            bookToUpdate.setIsbn(updatedBook.getIsbn());
+            bookToUpdate.setAvailable(updatedBook.isAvailable());
+            // Save the updated book to the repository
+            return bookRepository.save(bookToUpdate);
+        } else {
+            throw new BookNotFoundException("Book not found"); // Book with the given ID not found
+        }
+    }
 
     /**
      * Retrieve a list of all authors.
