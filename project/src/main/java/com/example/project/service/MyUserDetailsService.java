@@ -19,9 +19,24 @@ public class MyUserDetailsService implements UserDetailsService {
         this.userService = userService;
     }
 
+    /**
+     * Load user-specific data by their email address during authentication.
+     *
+     * @param emailAddress The email address of the user to load.
+     * @return UserDetails containing user details and authorities.
+     * @throws UsernameNotFoundException If the user is not found.
+     */
     @Override
     public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
+        // Load a user by their email address using the UserService.
         User user = userService.findUserByEmailAddress(emailAddress);
+
+        // If the user is not found, throw a UsernameNotFoundException.
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email address: " + emailAddress);
+        }
+
+        // Create and return a UserDetails object (MyUserDetails) based on the retrieved user.
         return new MyUserDetails(user);
     }
 }
