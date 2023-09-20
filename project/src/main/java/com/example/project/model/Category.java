@@ -1,6 +1,7 @@
 package com.example.project.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -9,12 +10,14 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Book> books = new HashSet<>();
+    // Add a relationship mapping to represent the "Category can have many Books" relationship.
+    @OneToMany(mappedBy = "category")
+    private List<Book> books;
 
-    // Constructors, getters, and setters
+    // Constructors, getters, setters, and other methods.
 
     public Category() {
         // Default constructor
