@@ -1,5 +1,7 @@
 package com.example.project.model;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 
 @Entity
@@ -25,6 +27,12 @@ public class Book {
 
     @Column(nullable = false)
     private boolean available;
+
+    // Define the many-to-one relationship with Author
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    @NotNull
+    private Author author;
 
     // Add a relationship mapping to represent the "Book belongs to a User (Borrower)" relationship.
     @ManyToOne

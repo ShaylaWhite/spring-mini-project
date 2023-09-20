@@ -2,6 +2,7 @@ package com.example.project.service;
 
 import com.example.project.exception.AuthorNotFoundException;
 import com.example.project.exception.InformationExistException;
+import com.example.project.exception.InformationNotFoundException;
 import com.example.project.model.Author;
 import com.example.project.model.Book;
 import com.example.project.model.Category;
@@ -58,10 +59,10 @@ public class LibraryService {
      */
     public Book createBook(Book book) {
         if (book.getTitle() == null || book.getTitle().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be empty.");
+            throw new InformationNotFoundException("Title cannot be empty.");
         }
         if (book.getAuthorName() == null || book.getAuthorName().isEmpty()) {
-            throw new IllegalArgumentException("Author name cannot be empty.");
+            throw new InformationNotFoundException("Author name cannot be empty.");
         }
 
         Book existingBook = bookRepository.findByTitle(book.getTitle());
