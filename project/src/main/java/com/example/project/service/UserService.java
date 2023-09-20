@@ -84,5 +84,21 @@ public class UserService {
 // Create an authentication token with the user's email address and password.
         UsernamePasswordAuthenticationToken authenticationToken = new
                 UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword());
+
+        try {
+            // Attempt to authenticate the user.
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+            // If authentication is successful, set the user's authentication in the security context.
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Get the user details from the authenticated principal.
+            MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+
+            // Generate a JWT token for the authenticated user.
+            return Optional.of(jwtUtils.generateJwtToken(myUserDetails));
+        } catch (Exception e) {
+            // If authentication fails, return an empty optional.
+            return Optional.empty();
     }
 }
