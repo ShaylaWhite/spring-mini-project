@@ -22,7 +22,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     Logger logger = Logger.getLogger(JwtRequestFilter.class.getName());
 
-
     private MyUserDetailsService myUserDetailsService;
     private JWTUtils jwtUtils;
 
@@ -36,15 +35,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         this.jwtUtils = jwtUtils;
     }
 
-
     // Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXJlc2gyQGdhLmNvbSIsImlhdCI6MTY5NDgwMDAzNiwiZXhwIjoxNjk0ODg2NDM2fQ.z3smvkvDJqOYz7699UjvH5JQ51MuWL-KXffegc1UxWU
 
-
+    /**
+     * Parse the JWT token from the Authorization header.
+     *
+     * @param request The HttpServletRequest from which to extract the token.
+     * @return The JWT token as a string or null if not found.
+     */
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
-        // Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXJlc2gyQGdhLmNvbSIsImlhdCI6MTY5NDgwMDAzNiwiZXhwIjoxNjk0ODg2NDM2fQ.z3smvkvDJqOYz7699UjvH5JQ51MuWL-KXffegc1UxWU
-        if (StringUtils.hasLength("headerAuth") && headerAuth.startsWith("Bearer")) {
-            return headerAuth.substring(7);
+        // Example: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXJlc2gyQGdhLmNvbSIsImlhdCI6MTY5NDgwMDAzNiwiZXhwIjoxNjk0ODg2NDM2fQ.z3smvkvDJqOYz7699UjvH5JQ51MuWL-KXffegc1UxWU
+        if (StringUtils.hasLength(headerAuth) && headerAuth.startsWith("Bearer")) {
+            return headerAuth.substring(7); // Extract the token part after "Bearer "
         }
         return null;
     }
@@ -55,13 +58,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
-                UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(username); // email address
+                UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(username); // Email address
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         } catch (Exception e) {
-            logger.info("cannot set user authentication token");
+            logger.info("Cannot set user authentication token");
         }
         filterChain.doFilter(request, response);
     }
