@@ -23,6 +23,9 @@ public class LibraryController {
     @Autowired
     private LibraryService libraryService;
 
+
+
+    // BOOK CRUD OPERATIONS
     @GetMapping(path = "/books") // GET http://localhost:9092/api/library/books
     public List<Book> getBooks() {
         return libraryService.getBooks();
@@ -34,6 +37,30 @@ public class LibraryController {
         Optional<Book> book = libraryService.getBook(bookId);
         return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    // Update a book by its ID
+    @PutMapping("/books/{bookId}") // PUT http://localhost:9092/api/library/books/{bookId}
+    public ResponseEntity<?> updateBook(@PathVariable Long bookId, @RequestBody Book updatedBook) {
+        try {
+            libraryService.updateBook(bookId, updatedBook);
+            return ResponseEntity.ok("Book updated successfully");
+        } catch (BookNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
+        }
+    }
+
+    // Delete a book by its ID
+    @DeleteMapping("/books/{bookId}") // DELETE http://localhost:9092/api/library/books/{bookId}
+    public ResponseEntity<?> deleteBook(@PathVariable Long bookId) {
+        try {
+            libraryService.deleteBook(bookId);
+            return ResponseEntity.ok("Book deleted successfully");
+        } catch (BookNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
+        }
+    }
+
+
+    // AUTHOR CRUD OPERATIONS
     @PostMapping("/authors/{authorId}/books")
     public ResponseEntity<?> createBook(@PathVariable Long authorId,
                                         @RequestParam Long categoryId,
@@ -74,6 +101,9 @@ public class LibraryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAuthor);
     }
 
+
+
+    // CATEGORIES CRUD OPERATIONS
     // Get a list of all categories.
     @GetMapping(path = "/categories") // GET http://localhost:9092/api/library/categories
     public List<Category> getCategories() {
