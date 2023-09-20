@@ -56,9 +56,7 @@ public class LibraryController {
         }
     }
 
-
-    // AUTHOR CRUD OPERATIONS
-    @PostMapping("/authors/{authorId}/books")
+    @PostMapping("/authors/{authorId}/books") //POST http://localhost:9092/api/library/authors/{authorId}/book
     public ResponseEntity<?> createBook(@PathVariable Long authorId,
                                         @RequestParam Long categoryId,
                                         @RequestParam String title,
@@ -78,6 +76,8 @@ public class LibraryController {
         }
     }
 
+
+    // AUTHOR CRUD OPERATIONS
     // Get a list of all authors.
     @GetMapping(path = "/authors") // GET http://localhost:9092/api/library/authors
     public List<Author> getAuthors() {
@@ -97,6 +97,20 @@ public class LibraryController {
         Author createdAuthor = libraryService.createAuthor(authorName);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAuthor);
     }
+
+  // Update Author
+  @PutMapping("/authors/{authorId}") // PUT http://localhost:9092/api/library/authors/{authorId}
+  public ResponseEntity<?> updateAuthor(@PathVariable Long authorId, @RequestBody Author updatedAuthor) {
+      try {
+          libraryService.updateAuthor(authorId, updatedAuthor);
+          return ResponseEntity.ok("Author updated successfully");
+      } catch (AuthorNotFoundException e) {
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author not found");
+      }
+  }
+
+
+
 
 
 
