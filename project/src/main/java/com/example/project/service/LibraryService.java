@@ -29,15 +29,7 @@ public class LibraryService {
         this.authorRepository = authorRepository;
     }
 
-    /**
-     * Find an author by their unique ID.
-     *
-     * @param authorId The ID of the author to retrieve.
-     * @return The author if found, or null if not found.
-     */
-    public Author findById(Long authorId) {
-        return authorRepository.findById(authorId).orElse(null);
-    }
+
 
 
     /**
@@ -101,6 +93,14 @@ public class LibraryService {
         }
     }
     // Update book details by its ID
+    /**
+     * Update book details by its ID.
+     *
+     * @param bookId       The ID of the book to update.
+     * @param updatedBook  The updated book object with new values.
+     * @return The updated book.
+     * @throws BookNotFoundException if the specified book ID is not found.
+     */
     public Book updateBook(Long bookId, Book updatedBook) {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
 
@@ -119,6 +119,50 @@ public class LibraryService {
         }
     }
 
+
+    // Delete a book by its ID
+    /**
+     * Delete a book by its ID.
+     *
+     * @param bookId The ID of the book to delete.
+     * @return True if the book was successfully deleted, false otherwise.
+     * @throws BookNotFoundException if the specified book ID is not found.
+     */
+    public boolean deleteBook(Long bookId) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+
+        if (optionalBook.isPresent()) {
+            Book bookToDelete = optionalBook.get();
+            bookRepository.delete(bookToDelete);
+            return true; // Book was successfully deleted
+        } else {
+            throw new BookNotFoundException("Book not found"); // Book with the given ID not found
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Find an author by their unique ID.
+     *
+     * @param authorId The ID of the author to retrieve.
+     * @return The author if found, or null if not found.
+     */
+    public Author findById(Long authorId) {
+        return authorRepository.findById(authorId).orElse(null);
+    }
     /**
      * Retrieve a list of all authors.
      *
