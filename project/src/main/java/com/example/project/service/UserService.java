@@ -3,12 +3,16 @@ package com.example.project.service;
 import com.example.project.exception.InformationExistException;
 import com.example.project.model.User;
 import com.example.project.repository.UserRepository;
+import com.example.project.request.LoginRequest;
 import com.example.project.security.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * The UserService class provides methods for user-related operations such as registration and retrieval.
@@ -77,6 +81,8 @@ public class UserService {
         }
     }
     public Optional<String> loginUser(LoginRequest loginRequest) {
-
+// Create an authentication token with the user's email address and password.
+        UsernamePasswordAuthenticationToken authenticationToken = new
+                UsernamePasswordAuthenticationToken(loginRequest.getEmailAddress(), loginRequest.getPassword());
     }
 }
