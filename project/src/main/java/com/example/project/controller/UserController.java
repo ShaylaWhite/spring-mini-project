@@ -59,11 +59,16 @@ public class UserController {
         //This code tries to log a user in using the information provided in loginRequest. If the login is successful, it stores a JWT token in the jwtToken variable.
         // If the login fails, the variable remains empty. The Optional is used to handle both scenarios.
         if (jwtToken.isPresent()) {
+            // Step 2 - If a JWT token is present, the login was successful.
+            // Create a ResponseEntity with a LoginResponse containing the JWT token.
             return ResponseEntity.ok(new LoginResponse(jwtToken.get()));
         } else {
+            // Step 3 - If no JWT token is present, the login failed.
+            // Return a ResponseEntity with an UNAUTHORIZED status and a LoginResponse indicating authentication failure.
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("Authentication failed"));
+        }
+
     }
-}
 }
 
 
