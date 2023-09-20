@@ -1,5 +1,8 @@
 package com.example.project.service;
 
+import com.example.project.model.Author;
+import com.example.project.model.Book;
+import com.example.project.model.Category;
 import com.example.project.repository.AuthorRepository;
 import com.example.project.repository.BookRepository;
 import com.example.project.repository.CategoryRepository;
@@ -26,10 +29,23 @@ public class LibraryService {
     }
 
     // BOOK OPERATIONS
+    // Retrieve a list of all books
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
 
 
     // AUTHOR OPERATIONS
+    // Retrieve a list of all authors
+    public List<Author> getAuthor() {
+        return authorRepository.findAll();
+    }
 
 
     // CATEGORY OPERATIONS
+    // Retrieve a list of all categories
+
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
+    }
 }
