@@ -186,35 +186,58 @@ public class LibraryService {
         }
     }
 
-
-    // Update an existing category by ID
+    // Update an existing category's name by its ID
+    /**
+     * Update an existing category's name by its ID.
+     *
+     * @param categoryId The ID of the category to be updated.
+     * @param newName    The new name for the category.
+     * @return The updated category.
+     * @throws InformationExistException   if the new name is the same as the existing name.
+     * @throws InformationNotFoundException if the category with the specified ID is not found.
+     */
     public Category updateCategoryName(Long categoryId, String newName) {
+        // Find the category by its ID
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
 
         if (categoryOptional.isPresent()) {
+            // Get the existing category
             Category existingCategory = categoryOptional.get();
 
             if (newName.equals(existingCategory.getName())) {
+                // If the new name is the same as the existing name, throw an exception
                 throw new InformationExistException("The category name is already " + newName);
             } else {
+                // Update the category's name and save it
                 existingCategory.setName(newName);
                 return categoryRepository.save(existingCategory);
             }
         } else {
+            // If the category with the specified ID is not found, throw an exception
             throw new InformationNotFoundException("Category with id " + categoryId + " not found.");
         }
     }
 
-
-    // Delete a category by ID
+    // Delete a category by its ID
+    /**
+     * Delete a category by its ID.
+     *
+     * @param categoryId The ID of the category to be deleted.
+     * @return An Optional containing the deleted category, if found.
+     * @throws InformationNotFoundException if the category with the specified ID is not found.
+     */
     public Optional<Category> deleteCategory(Long categoryId) {
+        // Find the category by its ID
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
 
         if (categoryOptional.isPresent()) {
+            // Delete the category by its ID
             categoryRepository.deleteById(categoryId);
             return categoryOptional;
         } else {
-            throw new InformationNotFoundException("Category with id " + categoryId + " not found");
+            // If the category with the specified ID is not found, throw an exception
+            throw new InformationNotFoundException("Category with id " + categoryId + " not found.");
         }
     }
+
 }
