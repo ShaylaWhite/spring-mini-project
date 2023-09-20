@@ -32,4 +32,73 @@ public class Book {
     private User borrower;
 
     // Constructors, getters, setters, and other methods.
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public User getBorrower() {
+        return borrower;
+    }
+
+    public void setBorrower(User borrower) {
+        this.borrower = borrower;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", category=" + category +
+                ", isbn='" + isbn + '\'' +
+                ", available=" + available +
+                ", borrower=" + borrower +
+                '}';
+    }
 }
