@@ -1,0 +1,56 @@
+Phase 2: Implement Core Functionality
+
+1. Create Category Model:
+Create a Category class in your project's model package.
+Annotate the class with @Entity.
+Add attributes like id, name, and any other relevant attributes.
+Use appropriate annotations to specify the primary key.
+
+2. CategoryRepository:
+Create a CategoryRepository interface in the repository package.
+Extend it from JpaRepository<Category, Long> to provide CRUD operations for Category entities.
+You can add custom queries if needed.
+
+3. CategoryService:
+Develop a CategoryService class in the service package.
+Autowire the CategoryRepository into this service.
+Implement methods for CRUD operations and any other category-related logic.
+
+4. Create Book Model:
+Create a Book class in your project's model package.
+Annotate the class with @Entity.
+Add attributes like id, title, author (you can use a ManyToOne relationship), category, isbn, description, and any other relevant attributes.
+Use appropriate annotations to specify the primary key and relationships with Author and Category.
+
+5. BookRepository:
+Create a BookRepository interface in the repository package.
+Extend it from JpaRepository<Book, Long> to provide CRUD operations for Book entities.
+You can add custom queries if needed.
+
+6. Author Model:
+Create an Author class in your project's model package.
+Annotate the class with @Entity.
+Add attributes like id, firstName, lastName, biography, and any other relevant attributes.
+Use appropriate annotations to specify the primary key.
+
+7. AuthorRepository:
+Create an AuthorRepository interface in the repository package.
+Extend it from JpaRepository<Author, Long> to provide CRUD operations for Author entities.
+You can add custom queries if needed.
+
+8. AuthorService:
+Develop an AuthorService class in the service package.
+Autowire the AuthorRepository into this service.
+Implement methods for CRUD operations and any other author-related logic.
+
+9. BookService:
+Develop a BookService class in the service package.
+Autowire the BookRepository into this service.
+Implement methods for CRUD operations and any other book-related logic.
+You may need methods for searching books by title, author, or category.
+
+10. API Endpoints for Books and Authors:
+Define API endpoints for managing books and authors in your UserController or dedicated BookController and AuthorController.
+Map these endpoints to appropriate methods in the BookService and AuthorService.
+Implement endpoints such as creating, retrieving, updating, and deleting books and authors.
+Apply authorization checks based on user roles (Admin, Public, Library Member) for each endpoint.
